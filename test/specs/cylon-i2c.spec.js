@@ -5,7 +5,8 @@ var BlinkM = source('blinkm'),
   Mpl115A2 = source('mpl115a2'),
   Bmp180 = source('bmp180'),
   Mpu6050 = source('mpu6050'),
-  LCD = source('lcd');
+  LCD = source('lcd'),
+  Adxl345 = source('adxl345');
 
 var module = source("cylon-i2c");
 var Cylon = require("cylon");
@@ -62,6 +63,14 @@ describe("I2C", function() {
       });
     });
 
+    context("with 'adxl345'", function() {
+      it("returns a Adxl345 driver instance", function() {
+        opts.name = 'adxl345';
+        var driver = module.driver(opts);
+        expect(driver).to.be.an.instanceOf(Adxl345);
+      });
+    });
+
     context("with an invalid driver name", function() {
       it("returns null", function() {
         var result = module.driver({name: 'notavaliddriver'});
@@ -110,6 +119,11 @@ describe("I2C", function() {
     it("registers the LCD driver", function() {
       expect(Cylon.Logger.debug).to.be.calledWithMatch("Registering i2c LCD driver");
       expect(robot.registerDriver).to.be.calledWith("cylon-i2c", "lcd");
+    });
+
+    it("registers the ADXL345 driver", function() {
+      expect(Cylon.Logger.debug).to.be.calledWithMatch("Registering i2c ADXL345 driver");
+      expect(robot.registerDriver).to.be.calledWith("cylon-i2c", "adxl345");
     });
   });
 });
